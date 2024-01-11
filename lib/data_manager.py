@@ -105,16 +105,22 @@ class SupervisedDataset(Dataset):
 
         # Prepare the source and target
         sources = [
-            gsm8k_prompt(
-                forward=perturbation(sen=forward_ques, ratio=0.10),
-                backward=perturbation(sen=backward_ques, ratio=0.10)
-            )
+            gsm8k_prompt(forward=forward_ques, backward=backward_ques)
             for forward_ques, backward_ques in zip(forward_q, backward_q)
         ]
-        targets = [
-            perturbation(sen=f"{example['answer_detail']}", ratio=0.10)
-            for example in dataset
-        ]
+        targets = [f"{example['answer_detail']}" for example in dataset]
+
+        # sources = [
+        #     gsm8k_prompt(
+        #         forward=perturbation(sen=forward_ques, ratio=0.10),
+        #         backward=perturbation(sen=backward_ques, ratio=0.10)
+        #     )
+        #     for forward_ques, backward_ques in zip(forward_q, backward_q)
+        # ]
+        # targets = [
+        #     perturbation(sen=f"{example['answer_detail']}", ratio=0.10)
+        #     for example in dataset
+        # ]
 
         self.sources = sources
         self.targets = targets
