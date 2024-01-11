@@ -5,8 +5,6 @@ import yaml
 import random
 from fraction import Fraction
 
-import transformers
-
 from data_processing.paragraph_split import paragraph_splitter
 from data_augmentation.character import CharacterPerturb
 from data_augmentation.word import WordPerturb
@@ -298,12 +296,3 @@ def perturbation(sen, ratio):
                 return ori_sen
 
     return sen
-
-
-def model_saver(trainer: transformers.Trainer, output_dir: str):
-    """Collects the state dict and dump to disk."""
-    state_dict = trainer.model.state_dict()
-    if trainer.args.should_save:
-        cpu_state_dict = {key: value.cpu() for key, value in state_dict.items()}
-        del state_dict
-        trainer._save(output_dir, state_dict=cpu_state_dict)  # noqa
